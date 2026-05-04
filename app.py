@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd # Needed to create an empty table
+import pandas as pd 
 from openai import OpenAI
 import time
 
@@ -24,15 +24,31 @@ st.markdown("**Existing Relationships:**")
 
 # Make the table reactive to the input
 if account_name.strip().lower() == "microsoft":
-    st.dataframe({
+    
+    # We build a structured DataFrame to allow for advanced column formatting
+    df = pd.DataFrame({
         "Name": contact_names,
         "Role": contact_roles,
-        "Relationship strength": contact_strengths
+        "Relationship strength": contact_strengths,
+        # NEW: Adding a column filled with generic LinkedIn URLs for the demo
+        "LinkedIn Action": ["https://www.linkedin.com"] * len(contact_names) 
     })
+    
+    # We display the dataframe and format the URL column to look like a clickable button/text
+    st.dataframe(
+        df,
+        column_config={
+            "LinkedIn Action": st.column_config.LinkColumn(
+                "Profile Link",
+                display_text="🔗 View Profile" # This hides the raw URL and shows clean text
+            )
+        },
+        hide_index=True # Hides the default row numbers for a cleaner look
+    )
 else:
     # Show an empty table and a warning if it's not Microsoft
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
-    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Relationship strength"]))
+    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Relationship strength", "Profile Link"]), hide_index=True)
 
 # Section 2: LinkedIn Scrape & Org Mapping
 st.header("2. AI Organization Mapping")
@@ -53,7 +69,7 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "bridge_name": "Aparajita Bhattacharyya",
                     "bridge_role": "GTM Strategy & Monetization Leader",
                     "bridge_strength": "3. Strong",
-                    "linkedin_status": "1st Degree Connection", # NEW: Simulating a direct connection
+                    "linkedin_status": "1st Degree Connection", 
                     "rationale": "As a GTM Strategy Leader, Aparajita likely aligns directly with VP-level leaders rolling out new AI solutions."
                 },
                 {
@@ -62,7 +78,7 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
                     "bridge_strength": "3. Strong",
-                    "linkedin_status": "2nd Degree Connection (3 Mutuals)", # NEW: Simulating an indirect connection
+                    "linkedin_status": "2nd Degree Connection (3 Mutuals)", 
                     "rationale": "Principal PMs frequently collaborate with Integration Directors to execute technical rollouts."
                 }
             ]
@@ -75,7 +91,7 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         st.markdown(f"### Prospect {i+1}: {lead['name']}")
         st.markdown(f"**Title:** {lead['role']}")
         st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']})")
-        st.markdown(f"🤝 **LinkedIn Connection Status:** {lead['linkedin_status']}") # NEW: Displaying the status
+        st.markdown(f"🤝 **LinkedIn Connection Status:** {lead['linkedin_status']}") 
         st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
         
         # We put the buttons in columns so they sit nicely side-by-side
@@ -89,7 +105,6 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
 
         if generate_email:
             with st.spinner("Drafting personalized outreach..."):
-                # NEW: Updated prompt to dynamically adjust tone based on LinkedIn status
                 prompt = f"""
                 You are an expert sales strategist for NewtonX.
                 Account: {account_name}
