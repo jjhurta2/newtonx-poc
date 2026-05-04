@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd
+import pandas as pd # Needed to create an empty table
 from openai import OpenAI
 import time
 
@@ -14,7 +14,9 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 # --- DATA SETUP ---
 contact_names = ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy Shen", "Reisel González Pérez", "Delaney Overton", "Hitesh Jonnalagadda", "Natalia Pérez López", "Andre Bernal", "Tim Harrison", "özlem sezginel", "Aparajita Bhattacharyya", "Elisa Garcia", "Jennie Cady", "Nili Shah", "Steve Downs", "Marcela Colmenares Amaya", "Prachi Jalan", "Yiyi Cui", "Ismael Camus"]
 contact_roles = ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"]
-contact_strengths = ["Medium", "Medium", "Weak", "Medium", "Weak", "Medium", "Medium", "Weak", "Medium", "Strong", "Weak", "Strong", "Strong", "Medium", "Strong", "Strong", "Medium", "Strong", "Weak", "Medium"]
+
+# UPDATED: Replaced all text values with the numbered formatting
+contact_strengths = ["2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"]
 
 # Section 1: Current Account Status
 st.header("1. Current Account Overview")
@@ -24,34 +26,11 @@ st.markdown("**Existing Relationships:**")
 
 # Make the table reactive to the input
 if account_name.strip().lower() == "microsoft":
-    
-    # Create a DataFrame for easier manipulation
-    df = pd.DataFrame({
+    st.dataframe({
         "Name": contact_names,
         "Role": contact_roles,
         "Relationship strength": contact_strengths
     })
-    
-    # --- NEW: Add a dropdown menu for sorting ---
-    sort_order = st.selectbox("Sort Relationships:", ["Default", "Strongest to Weakest", "Weakest to Strongest"])
-    
-    # Apply logical sorting based on dropdown selection
-    if sort_order != "Default":
-        # Create a hidden map so it doesn't sort alphabetically
-        sort_map = {"Strong": 3, "Medium": 2, "Weak": 1}
-        df['sort_weight'] = df['Relationship strength'].map(sort_map)
-        
-        if sort_order == "Strongest to Weakest":
-            df = df.sort_values(by='sort_weight', ascending=False)
-        elif sort_order == "Weakest to Strongest":
-            df = df.sort_values(by='sort_weight', ascending=True)
-            
-        # Drop the hidden weight column before displaying so the user doesn't see it
-        df = df.drop(columns=['sort_weight'])
-        
-    # Reset the index so the row numbers look clean after sorting, and display it
-    st.dataframe(df.reset_index(drop=True))
-
 else:
     # Show an empty table and a warning if it's not Microsoft
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
@@ -75,7 +54,7 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "role": f"VP of {target_department}",
                     "bridge_name": "Aparajita Bhattacharyya",
                     "bridge_role": "GTM Strategy & Monetization Leader",
-                    "bridge_strength": "Strong",
+                    "bridge_strength": "3. Strong", # UPDATED to match new format
                     "rationale": "As a GTM Strategy Leader, Aparajita likely aligns directly with VP-level leaders rolling out new AI solutions."
                 },
                 {
@@ -83,7 +62,7 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "role": f"Director of {target_department} Integration",
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
-                    "bridge_strength": "Strong",
+                    "bridge_strength": "3. Strong", # UPDATED to match new format
                     "rationale": "Principal PMs frequently collaborate with Integration Directors to execute technical rollouts."
                 }
             ]
@@ -98,7 +77,7 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']}) - **Strength:** {lead['bridge_strength']}")
         st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
         
-        # --- Fake LinkedIn Button ---
+        # --- NEW: Fake LinkedIn Button ---
         # We put the buttons in columns so they sit nicely side-by-side
         col1, col2 = st.columns([1, 1])
         
