@@ -16,7 +16,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 contact_names = ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy Shen", "Reisel González Pérez", "Delaney Overton", "Hitesh Jonnalagadda", "Natalia Pérez López", "Andre Bernal", "Tim Harrison", "özlem sezginel", "Aparajita Bhattacharyya", "Elisa Garcia", "Jennie Cady", "Nili Shah", "Steve Downs", "Marcela Colmenares Amaya", "Prachi Jalan", "Yiyi Cui", "Ismael Camus"]
 contact_roles = ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"]
 
-# --- NEW: Added the Team mappings ---
+# --- NEW: Added the Team array based on your provided data ---
 contact_teams = ["Microsoft FastTrack", "Azure Virtual Desktop", "Public Sector Sales", "Copilot Product Marketing", "Data & AI Customer Success", "Microsoft Teams Core", "Azure Cloud Platform", "Azure Data & AI Specialist Team Unit", "Xbox Cloud Gaming", "Microsoft Marketing Operations", "MCAPS Americas", "Windows Cloud (Windows 365)", "Corporate Business Development", "Surface Commercial Marketing", "Monetization & Strategy", "Azure Virtual Desktop", "Microsoft 365 Business Planning", "Cloud & AI Monetization", "Aspire / University Hires (Marketing)", "Cloud/AI Infra & Investments Strategy"]
 
 contact_strengths = ["2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"]
@@ -60,7 +60,7 @@ if account_name.strip().lower() == "microsoft":
         use_container_width=True 
     )
 else:
-    # --- NEW: Added "Team" to the empty table fallback ---
+    # --- NEW: Updated the empty table layout to include the Team column ---
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
     st.dataframe(pd.DataFrame(columns=["Name", "Role", "Team", "Email", "Relationship strength", "Profile Link"]), hide_index=True, use_container_width=True)
 
@@ -140,6 +140,7 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
                     temperature=0.7
                 )
                 
+                # Display the draft in a code block with an automatic Copy button
                 draft_text = response.choices[0].message.content
                 st.markdown("**Outreach Draft:** *(Click the icon in the top right of the box to copy)*")
                 st.code(draft_text, language="markdown")
