@@ -33,7 +33,7 @@ if st.button("Generate Expansion Strategy"):
         prompt = f"""
         You are an expert sales strategist for NewtonX.
         Account: {account_name}
-        Current Contacts: Sarah Jenkins (Dir. Product Marketing), David Chen (VP Research & Insights), Elena Rodriguez (Sr. Manager Cloud Strategy).
+        Current Contacts: Luis Sande (Product Manager), Cosme Ochoa (Senior Business Planner), Francisca Readi Vargas (Senior Account Executive), Sammy Shen (AI Agent / Past Core PMM), Reisel González Pérez (Sr. Solution Engineer - Data & AI), Delaney Overton (Product Manager), Hitesh Jonnalagadda (Product Manager), Natalia Pérez López (Solution Specialist - Azure Data & AI), Andre Bernal (Product Manager), Tim Harrison (Director of Business Management), özlem sezginel (Finance Manager), Aparajita Bhattacharyya (GTM Strategy & Monetization Leader), Elisa Garcia (Director, Corporate Business Development), Jennie Cady (Senior Product Marketing Manager), Nili Shah (Director Business Planning), Steve Downs (Principal Product Manager), Marcela Colmenares Amaya (Senior Business Planner), Prachi Jalan (Director & Team Lead, Monetization Strategy), Yiyi Cui (Incoming PMM), Ismael Camus (Sr. Finance Manager).
         Target Expansion Area: {target_department}
         
         Provide the following:
