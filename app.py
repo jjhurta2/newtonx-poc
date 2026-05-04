@@ -90,4 +90,68 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "name": "Sarah Jenkins",
                     "role": f"VP of {target_department}",
                     "bridge_name": "Aparajita Bhattacharyya",
-                    "bridge_
+                    "bridge_role": "GTM Strategy & Monetization Leader",
+                    "bridge_strength": "3. Strong",
+                    "linkedin_status": "1st Degree Connection", 
+                    "rationale": "As a GTM Strategy Leader, Aparajita likely aligns directly with VP-level leaders rolling out new AI solutions."
+                },
+                {
+                    "name": "Marcus Vance",
+                    "role": f"Director of {target_department} Integration",
+                    "bridge_name": "Steve Downs",
+                    "bridge_role": "Principal Product Manager",
+                    "bridge_strength": "3. Strong",
+                    "linkedin_status": "2nd Degree Connection (3 Mutuals)", 
+                    "rationale": "Principal PMs frequently collaborate with Integration Directors to execute technical rollouts."
+                }
+            ]
+
+# Section 3: Display Leads and Generate Outreach
+if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
+    st.success(f"Found {len(st.session_state['leads'])} high-value prospects!")
+    
+    for i, lead in enumerate(st.session_state['leads']):
+        st.markdown(f"### Prospect {i+1}: {lead['name']}")
+        st.markdown(f"**Title:** {lead['role']}")
+        st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']})")
+        st.markdown(f"🤝 **LinkedIn Connection Status:** {lead['linkedin_status']}") 
+        st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
+        
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.link_button("🌐 View LinkedIn Profile", "https://www.linkedin.com")
+            
+        with col2:
+            generate_email = st.button(f"Generate Outreach Draft", key=f"btn_{i}")
+
+        if generate_email:
+            with st.spinner("Drafting personalized outreach..."):
+                prompt = f"""
+                You are an expert sales strategist for NewtonX.
+                Account: {account_name}
+                Target Prospect: {lead['name']} ({lead['role']})
+                Internal Bridge Contact: {lead['bridge_name']} ({lead['bridge_role']})
+                LinkedIn Relationship: {lead['linkedin_status']}
+                
+                Write a short, professional email that the NewtonX CPM can send to {lead['bridge_name']} asking for an introduction to {lead['name']}.
+                
+                CRITICAL INSTRUCTION:
+                If the LinkedIn Relationship is "1st Degree Connection", explicitly mention in the email that you noticed they are directly connected on LinkedIn. 
+                If it is a "2nd Degree Connection", ask if they happen to cross paths or know them internally.
+                
+                Mention the value NewtonX provides (expert B2B market research and rapid insights) and how it might help the target prospect's department.
+                Keep it brief, friendly, and easy for the bridge contact to forward. Do not use placeholders like [Your Name].
+                """
+
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.7
+                )
+                
+                draft_text = response.choices[0].message.content
+                st.markdown("**Outreach Draft:** *(Click the icon in the top right of the box to copy)*")
+                st.code(draft_text, language="markdown")
+        
+        st.divider()
