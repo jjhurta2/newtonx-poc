@@ -14,8 +14,6 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 # --- DATA SETUP ---
 contact_names = ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy Shen", "Reisel González Pérez", "Delaney Overton", "Hitesh Jonnalagadda", "Natalia Pérez López", "Andre Bernal", "Tim Harrison", "özlem sezginel", "Aparajita Bhattacharyya", "Elisa Garcia", "Jennie Cady", "Nili Shah", "Steve Downs", "Marcela Colmenares Amaya", "Prachi Jalan", "Yiyi Cui", "Ismael Camus"]
 contact_roles = ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"]
-
-# UPDATED: Replaced all text values with the numbered formatting
 contact_strengths = ["2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"]
 
 # Section 1: Current Account Status
@@ -54,7 +52,8 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "role": f"VP of {target_department}",
                     "bridge_name": "Aparajita Bhattacharyya",
                     "bridge_role": "GTM Strategy & Monetization Leader",
-                    "bridge_strength": "3. Strong", # UPDATED to match new format
+                    "bridge_strength": "3. Strong",
+                    "linkedin_status": "1st Degree Connection", # NEW: Simulating a direct connection
                     "rationale": "As a GTM Strategy Leader, Aparajita likely aligns directly with VP-level leaders rolling out new AI solutions."
                 },
                 {
@@ -62,7 +61,8 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "role": f"Director of {target_department} Integration",
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
-                    "bridge_strength": "3. Strong", # UPDATED to match new format
+                    "bridge_strength": "3. Strong",
+                    "linkedin_status": "2nd Degree Connection (3 Mutuals)", # NEW: Simulating an indirect connection
                     "rationale": "Principal PMs frequently collaborate with Integration Directors to execute technical rollouts."
                 }
             ]
@@ -74,10 +74,10 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
     for i, lead in enumerate(st.session_state['leads']):
         st.markdown(f"### Prospect {i+1}: {lead['name']}")
         st.markdown(f"**Title:** {lead['role']}")
-        st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']}) - **Strength:** {lead['bridge_strength']}")
+        st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']})")
+        st.markdown(f"🤝 **LinkedIn Connection Status:** {lead['linkedin_status']}") # NEW: Displaying the status
         st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
         
-        # --- NEW: Fake LinkedIn Button ---
         # We put the buttons in columns so they sit nicely side-by-side
         col1, col2 = st.columns([1, 1])
         
@@ -89,13 +89,20 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
 
         if generate_email:
             with st.spinner("Drafting personalized outreach..."):
+                # NEW: Updated prompt to dynamically adjust tone based on LinkedIn status
                 prompt = f"""
                 You are an expert sales strategist for NewtonX.
                 Account: {account_name}
                 Target Prospect: {lead['name']} ({lead['role']})
                 Internal Bridge Contact: {lead['bridge_name']} ({lead['bridge_role']})
+                LinkedIn Relationship: {lead['linkedin_status']}
                 
-                Write a short, professional email that the NewtonX CPM can send to {lead['bridge_name']} asking for a warm introduction to {lead['name']}.
+                Write a short, professional email that the NewtonX CPM can send to {lead['bridge_name']} asking for an introduction to {lead['name']}.
+                
+                CRITICAL INSTRUCTION:
+                If the LinkedIn Relationship is "1st Degree Connection", explicitly mention in the email that you noticed they are directly connected on LinkedIn. 
+                If it is a "2nd Degree Connection", ask if they happen to cross paths or know them internally.
+                
                 Mention the value NewtonX provides (expert B2B market research and rapid insights) and how it might help the target prospect's department.
                 Keep it brief, friendly, and easy for the bridge contact to forward. Do not use placeholders like [Your Name].
                 """
