@@ -104,7 +104,7 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.link_button("🌐 View LinkedIn Profile", "https://www.linkedin.com")
+            st.link_button("View LinkedIn Profile", "https://www.linkedin.com")
             
         with col2:
             generate_email = st.button(f"Generate Outreach Draft", key=f"btn_{i}")
