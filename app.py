@@ -39,8 +39,8 @@ if account_name.strip().lower() == "microsoft":
         df,
         column_config={
             "LinkedIn Action": st.column_config.LinkColumn(
-                "Profile Link",
-                display_text="🔗 View Profile" # This hides the raw URL and shows clean text
+                "LinkedIn Profile",
+                display_text="View Profile" # This hides the raw URL and shows clean text
             )
         },
         hide_index=True # Hides the default row numbers for a cleaner look
