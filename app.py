@@ -17,9 +17,9 @@ account_name = st.text_input("Account Name", value="Microsoft")
 st.markdown("**Existing Relationships:**")
 # Using a table to cleanly display our dummy existing contacts
 st.table({
-    "Name": ["Sarah Jenkins", "David Chen", "Elena Rodriguez"],
-    "Role": ["Director of Product Marketing", "VP of Research & Insights", "Sr. Manager, Cloud Strategy"],
-    "Relationship Strength": ["Strong", "Medium", "Weak (1 call)"]
+    "Name": ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy Shen", "Reisel González Pérez", "Delaney Overton", "Hitesh Jonnalagadda", "Natalia Pérez López", "Andre Bernal", "Tim Harrison", "özlem sezginel", "Aparajita Bhattacharyya", "Elisa Garcia", "Jennie Cady", "Nili Shah", "Steve Downs", "Marcela Colmenares Amaya", "Prachi Jalan", "Yiyi Cui", "Ismael Camus"],
+    "Role": ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"],
+    "Relationship strength": ["Medium", "Medium", "Weak", "Medium", "Weak", "Medium", "Medium", "Weak", "Medium", "Strength", "Weak", "Strength", "Strength", "Medium", "Strength", "Strength", "Medium", "Strength", "Weak", "Medium"]
 })
 
 # Section 2: Expansion Target
