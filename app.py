@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd # Needed to create an empty table
+import pandas as pd
 from openai import OpenAI
 import time
 
@@ -24,11 +24,34 @@ st.markdown("**Existing Relationships:**")
 
 # Make the table reactive to the input
 if account_name.strip().lower() == "microsoft":
-    st.dataframe({
+    
+    # Create a DataFrame for easier manipulation
+    df = pd.DataFrame({
         "Name": contact_names,
         "Role": contact_roles,
         "Relationship strength": contact_strengths
     })
+    
+    # --- NEW: Add a dropdown menu for sorting ---
+    sort_order = st.selectbox("Sort Relationships:", ["Default", "Strongest to Weakest", "Weakest to Strongest"])
+    
+    # Apply logical sorting based on dropdown selection
+    if sort_order != "Default":
+        # Create a hidden map so it doesn't sort alphabetically
+        sort_map = {"Strong": 3, "Medium": 2, "Weak": 1}
+        df['sort_weight'] = df['Relationship strength'].map(sort_map)
+        
+        if sort_order == "Strongest to Weakest":
+            df = df.sort_values(by='sort_weight', ascending=False)
+        elif sort_order == "Weakest to Strongest":
+            df = df.sort_values(by='sort_weight', ascending=True)
+            
+        # Drop the hidden weight column before displaying so the user doesn't see it
+        df = df.drop(columns=['sort_weight'])
+        
+    # Reset the index so the row numbers look clean after sorting, and display it
+    st.dataframe(df.reset_index(drop=True))
+
 else:
     # Show an empty table and a warning if it's not Microsoft
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
@@ -75,7 +98,7 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']}) - **Strength:** {lead['bridge_strength']}")
         st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
         
-        # --- NEW: Fake LinkedIn Button ---
+        # --- Fake LinkedIn Button ---
         # We put the buttons in columns so they sit nicely side-by-side
         col1, col2 = st.columns([1, 1])
         
