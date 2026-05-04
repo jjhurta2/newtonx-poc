@@ -3,7 +3,7 @@ import pandas as pd
 from openai import OpenAI
 import time
 
-# Set up the page - NEW: Added layout="wide" here!
+# Set up the page
 st.set_page_config(page_title="NewtonX Org Mapper", page_icon="🎯", layout="wide")
 
 st.title("NewtonX CPM Org Mapper")
@@ -43,7 +43,6 @@ if account_name.strip().lower() == "microsoft":
         "LinkedIn Action": ["https://www.linkedin.com"] * len(contact_names) 
     })
     
-    # Use standard dataframe styling, but Streamlit will automatically expand it to fit the wide layout
     st.dataframe(
         df,
         column_config={
@@ -53,7 +52,7 @@ if account_name.strip().lower() == "microsoft":
             )
         },
         hide_index=True,
-        use_container_width=True # Ensures the table stretches across the wide layout
+        use_container_width=True 
     )
 else:
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
@@ -105,7 +104,7 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         col1, col2 = st.columns([1, 1])
         
         with col1:
-            st.link_button("View LinkedIn Profile", "https://www.linkedin.com")
+            st.link_button("🌐 View LinkedIn Profile", "https://www.linkedin.com")
             
         with col2:
             generate_email = st.button(f"Generate Outreach Draft", key=f"btn_{i}")
@@ -135,6 +134,9 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
                     temperature=0.7
                 )
                 
-                st.write(response.choices[0].message.content)
+                # --- NEW: Display the draft in a code block with an automatic Copy button ---
+                draft_text = response.choices[0].message.content
+                st.markdown("**Outreach Draft:** *(Click the icon in the top right of the box to copy)*")
+                st.code(draft_text, language="markdown")
         
         st.divider()
