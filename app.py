@@ -63,3 +63,31 @@ if account_name.strip().lower() == "microsoft":
         df,
         column_config={
             "LinkedIn Action": st.column_config.LinkColumn(
+                "Profile Link",
+                display_text="🔗 View Profile" 
+            )
+        },
+        hide_index=True,
+        use_container_width=True 
+    )
+else:
+    st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
+    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Team", "Email", "Relationship strength", "Profile Link"]), hide_index=True, use_container_width=True)
+
+# Section 2: LinkedIn Scrape & Org Mapping
+st.header("2. AI Organization Mapping")
+target_department = st.text_input("Which department do you want to expand into?", value="Enterprise AI Solutions")
+
+if st.button("Scrape LinkedIn & Find Bridges"):
+    if account_name.strip().lower() != "microsoft":
+        st.error("Please select an account with existing relationships (e.g., Microsoft) to map bridges.")
+    else:
+        with st.spinner(f"Scraping LinkedIn for {target_department} leaders at {account_name}..."):
+            time.sleep(2.5)
+            
+            st.session_state['leads'] = [
+                {
+                    "name": "Sarah Jenkins",
+                    "role": f"VP of {target_department}",
+                    "bridge_name": "Aparajita Bhattacharyya",
+                    "bridge_
