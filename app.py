@@ -16,6 +16,17 @@ contact_names = ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy S
 contact_roles = ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"]
 contact_strengths = ["2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"]
 
+# --- NEW: Dynamic Email Generation ---
+# Automatically formats emails: first 2 letters of first name + last name + @microsoft.com
+contact_emails = []
+for name in contact_names:
+    # Convert to lowercase and remove common accents for clean email addresses
+    clean_name = name.lower().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ö", "o")
+    parts = clean_name.split()
+    first_two = parts[0][:2]
+    last_name = "".join(parts[1:]) # Joins everything after the first name
+    contact_emails.append(f"{first_two}{last_name}@microsoft.com")
+
 # Section 1: Current Account Status
 st.header("1. Current Account Overview")
 account_name = st.text_input("Account Name", value="Microsoft")
@@ -29,8 +40,8 @@ if account_name.strip().lower() == "microsoft":
     df = pd.DataFrame({
         "Name": contact_names,
         "Role": contact_roles,
+        "Email": contact_emails, # NEW: Added the Email column here
         "Relationship strength": contact_strengths,
-        # NEW: Adding a column filled with generic LinkedIn URLs for the demo
         "LinkedIn Action": ["https://www.linkedin.com"] * len(contact_names) 
     })
     
@@ -39,16 +50,16 @@ if account_name.strip().lower() == "microsoft":
         df,
         column_config={
             "LinkedIn Action": st.column_config.LinkColumn(
-                "LinkedIn Profile",
-                display_text="View Profile" # This hides the raw URL and shows clean text
+                "Profile Link",
+                display_text="🔗 View Profile" 
             )
         },
-        hide_index=True # Hides the default row numbers for a cleaner look
+        hide_index=True 
     )
 else:
     # Show an empty table and a warning if it's not Microsoft
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
-    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Relationship strength", "Profile Link"]), hide_index=True)
+    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Email", "Relationship strength", "Profile Link"]), hide_index=True)
 
 # Section 2: LinkedIn Scrape & Org Mapping
 st.header("2. AI Organization Mapping")
