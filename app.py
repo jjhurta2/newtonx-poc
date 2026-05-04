@@ -4,7 +4,7 @@ import os
 
 # Set up the page
 st.set_page_config(page_title="NewtonX Org Mapper", page_icon="🎯")
-st.title("🎯 NewtonX Dynamic Org Mapper POC")
+st.title("NewtonX Dynamic Org Mapper")
 st.markdown("Automating stakeholder expansion for Client Partnership Managers.")
 
 # Initialize OpenAI Client (Pulls from Streamlit Secrets)
