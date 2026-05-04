@@ -6,7 +6,7 @@ import time
 # Set up the page
 st.set_page_config(page_title="NewtonX Org Mapper", page_icon="🎯")
 st.title("NewtonX CPM Org Mapper")
-st.markdown("Automating stakeholder expansion for Client Partnership Managers.")
+st.markdown("The stakeholder expansion assistant for Client Partnership Managers.")
 
 # Initialize OpenAI Client (Pulls from Streamlit Secrets)
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
