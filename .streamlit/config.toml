@@ -1,0 +1,15 @@
+[theme]
+# A vibrant tech blue similar to NewtonX branding
+primaryColor = "#0052FF" 
+
+# Sleek dark-mode background
+backgroundColor = "#0E1117" 
+
+# Slightly lighter dark background for input boxes and tables
+secondaryBackgroundColor = "#1E2130" 
+
+# Crisp white text for readability
+textColor = "#FFFFFF" 
+
+# Professional sans-serif font
+font = "sans serif"
