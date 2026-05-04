@@ -3,8 +3,9 @@ import pandas as pd
 from openai import OpenAI
 import time
 
-# Set up the page
-st.set_page_config(page_title="NewtonX Org Mapper", page_icon="🎯")
+# Set up the page - NEW: Added layout="wide" here!
+st.set_page_config(page_title="NewtonX Org Mapper", page_icon="🎯", layout="wide")
+
 st.title("NewtonX CPM Org Mapper")
 st.markdown("The stakeholder expansion assistant for Client Partnership Managers.")
 
@@ -16,15 +17,13 @@ contact_names = ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy S
 contact_roles = ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"]
 contact_strengths = ["2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"]
 
-# --- NEW: Dynamic Email Generation ---
 # Automatically formats emails: first 2 letters of first name + last name + @microsoft.com
 contact_emails = []
 for name in contact_names:
-    # Convert to lowercase and remove common accents for clean email addresses
     clean_name = name.lower().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ö", "o")
     parts = clean_name.split()
     first_two = parts[0][:2]
-    last_name = "".join(parts[1:]) # Joins everything after the first name
+    last_name = "".join(parts[1:]) 
     contact_emails.append(f"{first_two}{last_name}@microsoft.com")
 
 # Section 1: Current Account Status
@@ -36,16 +35,15 @@ st.markdown("**Existing Relationships:**")
 # Make the table reactive to the input
 if account_name.strip().lower() == "microsoft":
     
-    # We build a structured DataFrame to allow for advanced column formatting
     df = pd.DataFrame({
         "Name": contact_names,
         "Role": contact_roles,
-        "Email": contact_emails, # NEW: Added the Email column here
+        "Email": contact_emails, 
         "Relationship strength": contact_strengths,
         "LinkedIn Action": ["https://www.linkedin.com"] * len(contact_names) 
     })
     
-    # We display the dataframe and format the URL column to look like a clickable button/text
+    # Use standard dataframe styling, but Streamlit will automatically expand it to fit the wide layout
     st.dataframe(
         df,
         column_config={
@@ -54,19 +52,18 @@ if account_name.strip().lower() == "microsoft":
                 display_text="🔗 View Profile" 
             )
         },
-        hide_index=True 
+        hide_index=True,
+        use_container_width=True # Ensures the table stretches across the wide layout
     )
 else:
-    # Show an empty table and a warning if it's not Microsoft
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
-    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Email", "Relationship strength", "Profile Link"]), hide_index=True)
+    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Email", "Relationship strength", "Profile Link"]), hide_index=True, use_container_width=True)
 
 # Section 2: LinkedIn Scrape & Org Mapping
 st.header("2. AI Organization Mapping")
 target_department = st.text_input("Which department do you want to expand into?", value="Enterprise AI Solutions")
 
 if st.button("Scrape LinkedIn & Find Bridges"):
-    # Prevent running the scrape if they test a blank/different account
     if account_name.strip().lower() != "microsoft":
         st.error("Please select an account with existing relationships (e.g., Microsoft) to map bridges.")
     else:
@@ -105,7 +102,6 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         st.markdown(f"🤝 **LinkedIn Connection Status:** {lead['linkedin_status']}") 
         st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
         
-        # We put the buttons in columns so they sit nicely side-by-side
         col1, col2 = st.columns([1, 1])
         
         with col1:
