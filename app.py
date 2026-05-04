@@ -33,7 +33,7 @@ st.header("2. AI Organization Mapping")
 target_department = st.text_input("Which department do you want to expand into?", value="Enterprise AI Solutions")
 
 # We use a button to trigger the "scrape"
-if st.button("Simulate LinkedIn Scrape & Find Bridges"):
+if st.button("Scrape LinkedIn & Find Bridges"):
     with st.spinner(f"Scraping LinkedIn for {target_department} leaders at {account_name}..."):
         time.sleep(2.5) # Pauses for 2.5 seconds to make it feel like real scraping
         
