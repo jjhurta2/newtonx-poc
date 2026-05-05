@@ -80,7 +80,7 @@ if st.button("Find Targets & Map Bridges"):
         # Visualizing the Waterfall Logic for the presentation
         with st.spinner(f"Querying CRM & Affinity for internal {target_department} contacts..."):
             time.sleep(1.5)
-        with st.spinner("0 targets found internally. Triggering ZoomInfo fallback for net-new profiles..."):
+        with st.spinner("1 target found internally. Triggering ZoomInfo for net-new profiles..."):
             time.sleep(1.5)
         with st.spinner("Profiles found. Cross-referencing Affinity metadata to identify internal Bridge contacts..."):
             time.sleep(2.0)
@@ -93,16 +93,16 @@ if st.button("Find Targets & Map Bridges"):
                     "bridge_role": "GTM Strategy & Monetization Leader",
                     "connection_type": "Direct Communication (Affinity)",
                     "connection_score": "88/100 (Strong)", 
-                    "rationale": "Affinity captured 14 email exchanges and 2 calendar invites between Aparajita and Sarah in the last 6 months. High probability of a warm introduction."
+                    "rationale": "Affinity captured 14 email exchanges and 2 calendar invites that included both Aparajita and Sarah in the last 6 months."
                 },
                 {
                     "name": "Marcus Vance",
                     "role": f"Director of {target_department} Integration",
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
-                    "connection_type": "Heuristic Alumni Match (ZoomInfo)",
+                    "connection_type": "Alumni Match (ZoomInfo)",
                     "connection_score": "0/100 (No direct contact)", 
-                    "rationale": "No internal email metadata found. Fallback to heuristic ZoomInfo match: Both Marcus and Steve worked at Bain & Company in 2019."
+                    "rationale": "No internal email metadata found. Fallback to ZoomInfo match: Both Marcus and Steve worked at Citrix DaaS in 2014."
                 }
             ]
 
