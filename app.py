@@ -88,7 +88,7 @@ contact_linkedin = [
     "https://www.linkedin.com/in/elisa-garcia-b8bb2092", 
     "https://www.linkedin.com/in/jennie-cady",
     "https://www.linkedin.com/in/nili-shah", 
-    "https://www.linkedin.com/in/steve-downs",
+    "https://www.linkedin.com/in/stevendowns",
     "https://www.linkedin.com/in/marcela-colmenares", 
     "https://www.linkedin.com/in/prachi-jalan",
     "https://www.linkedin.com/in/yiyi-cui", 
