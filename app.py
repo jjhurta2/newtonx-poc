@@ -100,7 +100,7 @@ if st.button("Find Targets & Map Bridges"):
                     "role": f"Director of {target_department} Integration",
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
-                    "connection_type": "Alumni Match (ZoomInfo)",
+                    "connection_type": "Alumni Match (ZoomInfo): Citrix DaaS",
                     "connection_score": "0/100 (No direct contact)", 
                     "rationale": "No internal email metadata found. Fallback to ZoomInfo match: Both Marcus and Steve worked at Citrix DaaS in 2014."
                 },
@@ -111,7 +111,7 @@ if st.button("Find Targets & Map Bridges"):
                     "bridge_role": "N/A",
                     "connection_type": "Cold Outreach (ZoomInfo)",
                     "connection_score": "0/100 (No overlap)", 
-                    "rationale": "No internal email metadata found. No heuristic alumni overlap found in ZoomInfo. Recommending direct cold value-play outreach."
+                    "rationale": "No internal email metadata found. No alumni overlap found in ZoomInfo."
                 }
             ]
 
