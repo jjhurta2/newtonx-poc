@@ -73,7 +73,7 @@ else:
 st.header("2. AI Target & Bridge Discovery")
 target_department = st.text_input("Which department do you want to expand into?", value="Enterprise AI Solutions")
 
-if st.button("Run Waterfall Target & Bridge Mapping"):
+if st.button("Find Targets & Map Bridges"):
     if account_name.strip().lower() != "microsoft":
         st.error("Please select an account with existing relationships (e.g., Microsoft) to map bridges.")
     else:
