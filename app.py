@@ -29,16 +29,16 @@ contact_emails = [
 ]
 
 contact_linkedin = [
-    "https://www.linkedin.com/in/luis-sande-fake", "https://www.linkedin.com/in/cosme-ochoa-fake",
-    "https://www.linkedin.com/in/francisca-readi-fake", "https://www.linkedin.com/in/sammy-shen-fake",
-    "https://www.linkedin.com/in/reisel-gonzalez-fake", "https://www.linkedin.com/in/delaney-overton-fake",
-    "https://www.linkedin.com/in/hitesh-jonnalagadda-fake", "https://www.linkedin.com/in/natalia-perez-fake",
-    "https://www.linkedin.com/in/andre-bernal-fake", "https://www.linkedin.com/in/tim-harrison-fake",
-    "https://www.linkedin.com/in/ozlem-sezginel-fake", "https://www.linkedin.com/in/aparajita-bhattacharyya-fake",
-    "https://www.linkedin.com/in/elisa-garcia-fake", "https://www.linkedin.com/in/jennie-cady-fake",
-    "https://www.linkedin.com/in/nili-shah-fake", "https://www.linkedin.com/in/steve-downs-fake",
-    "https://www.linkedin.com/in/marcela-colmenares-fake", "https://www.linkedin.com/in/prachi-jalan-fake",
-    "https://www.linkedin.com/in/yiyi-cui-fake", "https://www.linkedin.com/in/ismael-camus-fake"
+    "https://www.linkedin.com/in/luis-sande", "https://www.linkedin.com/in/cosme-ochoa",
+    "https://www.linkedin.com/in/francisca-readi", "https://www.linkedin.com/in/sammy-shen",
+    "https://www.linkedin.com/in/reisel-gonzalez", "https://www.linkedin.com/in/delaney-overton",
+    "https://www.linkedin.com/in/hitesh-jonnalagadda", "https://www.linkedin.com/in/natalia-perez",
+    "https://www.linkedin.com/in/andre-bernal", "https://www.linkedin.com/in/tim-harrison",
+    "https://www.linkedin.com/in/ozlem-sezginel", "https://www.linkedin.com/in/aparajita-bhattacharyya",
+    "https://www.linkedin.com/in/elisa-garcia", "https://www.linkedin.com/in/jennie-cady",
+    "https://www.linkedin.com/in/nili-shah", "https://www.linkedin.com/in/steve-downs",
+    "https://www.linkedin.com/in/marcela-colmenares", "https://www.linkedin.com/in/prachi-jalan",
+    "https://www.linkedin.com/in/yiyi-cui", "https://www.linkedin.com/in/ismael-camus"
 ]
 
 # Section 1: Current Account Status
