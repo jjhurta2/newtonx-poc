@@ -13,32 +13,86 @@ st.markdown("The stakeholder expansion assistant for Client Partnership Managers
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # --- DATA SETUP ---
-contact_names = ["Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy Shen", "Reisel González Pérez", "Delaney Overton", "Hitesh Jonnalagadda", "Natalia Pérez López", "Andre Bernal", "Tim Harrison", "özlem sezginel", "Aparajita Bhattacharyya", "Elisa Garcia", "Jennie Cady", "Nili Shah", "Steve Downs", "Marcela Colmenares Amaya", "Prachi Jalan", "Yiyi Cui", "Ismael Camus"]
-contact_roles = ["Product Manager", "Senior Business Planner", "Senior Account Executive", "AI Agent / Past Core PMM", "Sr. Solution Engineer - Data & AI", "Product Manager", "Product Manager", "Solution Specialist - Azure Data & AI", "Product Manager", "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", "Director, Corporate Business Development", "Senior Product Marketing Manager", "Director Business Planning", "Principal Product Manager", "Senior Business Planner", "Director & Team Lead, Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"]
-contact_teams = ["Microsoft FastTrack", "Azure Virtual Desktop", "Public Sector Sales", "Copilot Product Marketing", "Data & AI Customer Success", "Microsoft Teams Core", "Azure Cloud Platform", "Azure Data & AI Specialist Team Unit", "Xbox Cloud Gaming", "Microsoft Marketing Operations", "MCAPS Americas", "Windows Cloud (Windows 365)", "Corporate Business Development", "Surface Commercial Marketing", "Monetization & Strategy", "Azure Virtual Desktop", "Microsoft 365 Business Planning", "Cloud & AI Monetization", "Aspire / University Hires (Marketing)", "Cloud/AI Infra & Investments Strategy"]
-contact_strengths = ["2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"]
+contact_names = [
+    "Luis Sande", "Cosme Ochoa", "Francisca Readi Vargas", "Sammy Shen", 
+    "Reisel González Pérez", "Delaney Overton", "Hitesh Jonnalagadda", 
+    "Natalia Pérez López", "Andre Bernal", "Tim Harrison", "özlem sezginel", 
+    "Aparajita Bhattacharyya", "Elisa Garcia", "Jennie Cady", "Nili Shah", 
+    "Steve Downs", "Marcela Colmenares Amaya", "Prachi Jalan", "Yiyi Cui", 
+    "Ismael Camus"
+]
+
+contact_roles = [
+    "Product Manager", "Senior Business Planner", "Senior Account Executive", 
+    "AI Agent / Past Core PMM", "Sr. Solution Engineer Data & AI", "Product Manager", 
+    "Product Manager", "Solution Specialist Azure Data & AI", "Product Manager", 
+    "Director of Business Management", "Finance Manager", "GTM Strategy & Monetization Leader", 
+    "Director Corporate Business Development", "Senior Product Marketing Manager", 
+    "Director Business Planning", "Principal Product Manager", "Senior Business Planner", 
+    "Director & Team Lead Monetization Strategy", "Incoming PMM", "Sr. Finance Manager"
+]
+
+contact_teams = [
+    "Microsoft FastTrack", "Azure Virtual Desktop", "Public Sector Sales", 
+    "Copilot Product Marketing", "Data & AI Customer Success", "Microsoft Teams Core", 
+    "Azure Cloud Platform", "Azure Data & AI Specialist Team Unit", "Xbox Cloud Gaming", 
+    "Microsoft Marketing Operations", "MCAPS Americas", "Windows Cloud", 
+    "Corporate Business Development", "Surface Commercial Marketing", "Monetization & Strategy", 
+    "Azure Virtual Desktop", "Microsoft 365 Business Planning", "Cloud & AI Monetization", 
+    "Aspire / University Hires", "Cloud/AI Infra & Investments Strategy"
+]
+
+contact_strengths = [
+    "2. Medium", "2. Medium", "1. Weak", "2. Medium", "1. Weak", 
+    "2. Medium", "2. Medium", "1. Weak", "2. Medium", "3. Strong", 
+    "1. Weak", "3. Strong", "3. Strong", "2. Medium", "3. Strong", 
+    "3. Strong", "2. Medium", "3. Strong", "1. Weak", "2. Medium"
+]
 
 contact_emails = [
-    "lusande@microsoft.com", "coochoa@microsoft.com", "frreadivargas@microsoft.com",
-    "sashen@microsoft.com", "regonzalezperez@microsoft.com", "deoverton@microsoft.com",
-    "hijonnalagadda@microsoft.com", "naperezlopez@microsoft.com", "anbernal@microsoft.com",
-    "tiharrison@microsoft.com", "ozsezginel@microsoft.com", "apbhattacharyya@microsoft.com",
-    "elgarcia@microsoft.com", "jecady@microsoft.com", "nishah@microsoft.com",
-    "stdowns@microsoft.com", "macolmenaresamaya@microsoft.com", "prjalan@microsoft.com",
-    "yicui@microsoft.com", "iscamus@microsoft.com"
+    "lusande@microsoft.com", 
+    "coochoa@microsoft.com", 
+    "frreadivargas@microsoft.com",
+    "sashen@microsoft.com", 
+    "regonzalezperez@microsoft.com", 
+    "deoverton@microsoft.com",
+    "hijonnalagadda@microsoft.com", 
+    "naperezlopez@microsoft.com", 
+    "anbernal@microsoft.com",
+    "tiharrison@microsoft.com", 
+    "ozsezginel@microsoft.com", 
+    "apbhattacharyya@microsoft.com",
+    "elgarcia@microsoft.com", 
+    "jecady@microsoft.com", 
+    "nishah@microsoft.com",
+    "stdowns@microsoft.com", 
+    "macolmenaresamaya@microsoft.com", 
+    "prjalan@microsoft.com",
+    "yicui@microsoft.com", 
+    "iscamus@microsoft.com"
 ]
 
 contact_linkedin = [
-    "https://www.linkedin.com/in/luisfelipesande", "https://www.linkedin.com/in/cosme-ochoa",
-    "https://www.linkedin.com/in/francisca-readi", "https://www.linkedin.com/in/sammy-shen",
-    "https://www.linkedin.com/in/reisel-gonzalez", "https://www.linkedin.com/in/delaneyoverton",
-    "https://www.linkedin.com/in/hitesh-jonnalagadda", "https://www.linkedin.com/in/natalia-pérez-lópez-67195167",
-    "https://www.linkedin.com/in/andre-bernal", "https://www.linkedin.com/in/timothykharrison",
-    "https://www.linkedin.com/in/ozlem-sezginel", "https://www.linkedin.com/in/opub",
-    "https://www.linkedin.com/in/elisa-garcia-b8bb2092", "https://www.linkedin.com/in/jennie-cady",
-    "https://www.linkedin.com/in/nili-shah", "https://www.linkedin.com/in/steve-downs",
-    "https://www.linkedin.com/in/marcela-colmenares", "https://www.linkedin.com/in/prachi-jalan",
-    "https://www.linkedin.com/in/yiyi-cui", "https://www.linkedin.com/in/ismael-camus"
+    "https://www.linkedin.com/in/luisfelipesande", 
+    "https://www.linkedin.com/in/cosme-ochoa",
+    "https://www.linkedin.com/in/francisca-readi", 
+    "https://www.linkedin.com/in/sammy-shen",
+    "https://www.linkedin.com/in/reisel-gonzalez", 
+    "https://www.linkedin.com/in/delaneyoverton",
+    "https://www.linkedin.com/in/hitesh-jonnalagadda", 
+    "https://www.linkedin.com/in/natalia-pérez-lópez-67195167",
+    "https://www.linkedin.com/in/andre-bernal", 
+    "https://www.linkedin.com/in/timothykharrison",
+    "https://www.linkedin.com/in/ozlem-sezginel", 
+    "https://www.linkedin.com/in/opub",
+    "https://www.linkedin.com/in/elisa-garcia-b8bb2092", 
+    "https://www.linkedin.com/in/jennie-cady",
+    "https://www.linkedin.com/in/nili-shah", 
+    "https://www.linkedin.com/in/steve-downs",
+    "https://www.linkedin.com/in/marcela-colmenares", 
+    "https://www.linkedin.com/in/prachi-jalan",
+    "https://www.linkedin.com/in/yiyi-cui", 
+    "https://www.linkedin.com/in/ismael-camus"
 ]
 
 # Section 1: Current Account Status
@@ -100,7 +154,7 @@ if st.button("Find Targets & Map Bridges"):
                     "role": f"Director of {target_department} Integration",
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
-                    "connection_type": "Alumni Match (ZoomInfo): Citrix DaaS",
+                    "connection_type": "Alumni Match (ZoomInfo)",
                     "connection_score": "0/100 (No direct contact)", 
                     "rationale": "No internal email metadata found. Fallback to ZoomInfo match: Both Marcus and Steve worked at Citrix DaaS in 2014."
                 },
@@ -111,7 +165,7 @@ if st.button("Find Targets & Map Bridges"):
                     "bridge_role": "N/A",
                     "connection_type": "Cold Outreach (ZoomInfo)",
                     "connection_score": "0/100 (No overlap)", 
-                    "rationale": "No internal email metadata found. No alumni overlap found in ZoomInfo."
+                    "rationale": "No internal email metadata found. No heuristic alumni overlap found in ZoomInfo. Recommending direct cold value proposition outreach."
                 }
             ]
 
@@ -131,24 +185,34 @@ if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
         if generate_email:
             with st.spinner("Synthesizing relationship context into personalized outreach..."):
                 prompt = f"""
-                You are an expert sales strategist for NewtonX.
+                You are an elite sales strategist for NewtonX.
                 Account: {account_name}
                 Target Prospect: {lead['name']} ({lead['role']})
-                Internal Bridge Contact: {lead['bridge_name']} ({lead['bridge_role']})
+                Bridge Contact (Your existing relationship at the account): {lead['bridge_name']} ({lead['bridge_role']})
                 Connection Type: {lead['connection_type']}
                 Relationship Details: {lead['rationale']}
                 
-                CRITICAL INSTRUCTION FOR TASK AND TONE:
-                - If the Connection Type is "Direct Communication (Affinity)" or "Alumni Match (ZoomInfo)", write a short email that the NewtonX CPM can send to the Internal Bridge Contact asking for an introduction to the Target Prospect. 
-                    - For Affinity matches: explicitly reference their recent meeting/email history.
-                    - For Alumni matches: mention their shared past experience and ask if they feel comfortable reaching out.
-                    - Tone for internal emails: Use highly direct, casual language suitable for internal colleagues. Strictly avoid overly formal, stiff, or passive-aggressive phrasing. Get straight to the point.
+                INSTRUCTIONS BASED ON CONNECTION TYPE:
                 
-                - If the Connection Type is "Cold Outreach (ZoomInfo)", write a direct cold outreach email to be sent directly to the Target Prospect (ignore the Bridge Contact). 
-                    - Focus purely on a strong value proposition regarding how NewtonX (expert B2B market research and rapid insights) can help their specific department. 
-                    - Tone for cold emails: Professional, concise, and compelling.
+                Scenario A: "Direct Communication (Affinity)"
+                Task: Write an email to the Bridge Contact asking them to introduce you to the Target Prospect.
+                Structure: Acknowledge you saw they recently interacted/met with the Target (use the Relationship Details). Explain briefly why you want to connect with the Target (to share NewtonX's rapid insights value). Ask if they'd be willing to pass along a short intro.
+                Tone: Direct, friendly, and casual. Strictly avoid overly formal, stiff, or passive-aggressive phrasing. Speak to them as a familiar industry partner.
                 
-                Keep it brief and easy to action. Do not use placeholders like [Your Name].
+                Scenario B: "Alumni Match (ZoomInfo)"
+                Task: Write an email to the Bridge Contact asking for an introduction to the Target Prospect.
+                Structure: Mention that you are trying to reach the Target, and noticed they both worked at the specific past company mentioned in the Relationship Details. Ask if they actually knew each other there and if they'd feel comfortable making a warm intro. Give them an easy out if they don't actually know them well.
+                Tone: Direct, friendly, and casual. Strictly avoid overly formal, stiff, or passive-aggressive phrasing.
+                
+                Scenario C: "Cold Outreach (ZoomInfo)"
+                Task: Write a cold email DIRECTLY to the Target Prospect. (Do NOT address the Bridge Contact).
+                Structure: Hook them with a challenge relevant to their specific department. Introduce NewtonX as the solution for B2B market research and rapid expert insights. Include a soft call to action.
+                Tone: Professional, concise, compelling, and organizational-focused rather than overly intimate.
+                
+                CRITICAL RULES FOR ALL SCENARIOS:
+                - Write ONLY the email body. Do not include subject lines.
+                - Do not use bracketed placeholders like [Your Name] or [Link].
+                - Keep it under 100 words.
                 """
 
                 response = client.chat.completions.create(
