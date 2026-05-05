@@ -29,13 +29,13 @@ contact_emails = [
 ]
 
 contact_linkedin = [
-    "https://www.linkedin.com/in/luis-sande", "https://www.linkedin.com/in/cosme-ochoa",
+    "https://www.linkedin.com/in/luisfelipesande", "https://www.linkedin.com/in/cosme-ochoa",
     "https://www.linkedin.com/in/francisca-readi", "https://www.linkedin.com/in/sammy-shen",
-    "https://www.linkedin.com/in/reisel-gonzalez", "https://www.linkedin.com/in/delaney-overton",
-    "https://www.linkedin.com/in/hitesh-jonnalagadda", "https://www.linkedin.com/in/natalia-perez",
-    "https://www.linkedin.com/in/andre-bernal", "https://www.linkedin.com/in/tim-harrison",
-    "https://www.linkedin.com/in/ozlem-sezginel", "https://www.linkedin.com/in/aparajita-bhattacharyya",
-    "https://www.linkedin.com/in/elisa-garcia", "https://www.linkedin.com/in/jennie-cady",
+    "https://www.linkedin.com/in/reisel-gonzalez", "https://www.linkedin.com/in/delaneyoverton",
+    "https://www.linkedin.com/in/hitesh-jonnalagadda", "https://www.linkedin.com/in/natalia-pérez-lópez-67195167",
+    "https://www.linkedin.com/in/andre-bernal", "https://www.linkedin.com/in/timothykharrison",
+    "https://www.linkedin.com/in/ozlem-sezginel", "https://www.linkedin.com/in/opub",
+    "https://www.linkedin.com/in/elisa-garcia-b8bb2092", "https://www.linkedin.com/in/jennie-cady",
     "https://www.linkedin.com/in/nili-shah", "https://www.linkedin.com/in/steve-downs",
     "https://www.linkedin.com/in/marcela-colmenares", "https://www.linkedin.com/in/prachi-jalan",
     "https://www.linkedin.com/in/yiyi-cui", "https://www.linkedin.com/in/ismael-camus"
@@ -47,9 +47,7 @@ account_name = st.selectbox("Account Name", options=["Microsoft"])
 
 st.markdown("**Existing Relationships:**")
 
-# Make the table reactive to the input
 if account_name.strip().lower() == "microsoft":
-    
     df = pd.DataFrame({
         "Name": contact_names,
         "Role": contact_roles,
@@ -62,10 +60,7 @@ if account_name.strip().lower() == "microsoft":
     st.dataframe(
         df,
         column_config={
-            "LinkedIn Action": st.column_config.LinkColumn(
-                "Profile Link",
-                display_text="🔗 View Profile" 
-            )
+            "LinkedIn Action": st.column_config.LinkColumn("Profile Link", display_text="🔗 View Profile")
         },
         hide_index=True,
         use_container_width=True 
@@ -74,16 +69,21 @@ else:
     st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
     st.dataframe(pd.DataFrame(columns=["Name", "Role", "Team", "Email", "Relationship strength", "Profile Link"]), hide_index=True, use_container_width=True)
 
-# Section 2: LinkedIn Scrape & Org Mapping
-st.header("2. AI Organization Mapping")
+# Section 2: Enterprise Waterfall Discovery
+st.header("2. AI Target & Bridge Discovery")
 target_department = st.text_input("Which department do you want to expand into?", value="Enterprise AI Solutions")
 
-if st.button("Scrape LinkedIn & Find Bridges"):
+if st.button("Run Waterfall Target & Bridge Mapping"):
     if account_name.strip().lower() != "microsoft":
         st.error("Please select an account with existing relationships (e.g., Microsoft) to map bridges.")
     else:
-        with st.spinner(f"Scraping LinkedIn for {target_department} leaders at {account_name}..."):
-            time.sleep(2.5)
+        # Visualizing the Waterfall Logic for the presentation
+        with st.spinner(f"Querying CRM & Affinity for internal {target_department} contacts..."):
+            time.sleep(1.5)
+        with st.spinner("0 targets found internally. Triggering ZoomInfo fallback for net-new profiles..."):
+            time.sleep(1.5)
+        with st.spinner("Profiles found. Cross-referencing Affinity metadata to identify internal Bridge contacts..."):
+            time.sleep(2.0)
             
             st.session_state['leads'] = [
                 {
@@ -91,57 +91,52 @@ if st.button("Scrape LinkedIn & Find Bridges"):
                     "role": f"VP of {target_department}",
                     "bridge_name": "Aparajita Bhattacharyya",
                     "bridge_role": "GTM Strategy & Monetization Leader",
-                    "bridge_strength": "3. Strong",
-                    "linkedin_status": "1st Degree Connection", 
-                    "rationale": "As a GTM Strategy Leader, Aparajita likely aligns directly with VP-level leaders rolling out new AI solutions."
+                    "connection_type": "Direct Communication (Affinity)",
+                    "connection_score": "88/100 (Strong)", 
+                    "rationale": "Affinity captured 14 email exchanges and 2 calendar invites between Aparajita and Sarah in the last 6 months. High probability of a warm introduction."
                 },
                 {
                     "name": "Marcus Vance",
                     "role": f"Director of {target_department} Integration",
                     "bridge_name": "Steve Downs",
                     "bridge_role": "Principal Product Manager",
-                    "bridge_strength": "3. Strong",
-                    "linkedin_status": "2nd Degree Connection (3 Mutuals)", 
-                    "rationale": "Principal PMs frequently collaborate with Integration Directors to execute technical rollouts."
+                    "connection_type": "Heuristic Alumni Match (ZoomInfo)",
+                    "connection_score": "0/100 (No direct contact)", 
+                    "rationale": "No internal email metadata found. Fallback to heuristic ZoomInfo match: Both Marcus and Steve worked at Bain & Company in 2019."
                 }
             ]
 
 # Section 3: Display Leads and Generate Outreach
 if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
-    st.success(f"Found {len(st.session_state['leads'])} high-value prospects!")
+    st.success(f"Waterfall complete. Found {len(st.session_state['leads'])} high-value prospects.")
     
     for i, lead in enumerate(st.session_state['leads']):
         st.markdown(f"### Prospect {i+1}: {lead['name']}")
         st.markdown(f"**Title:** {lead['role']}")
         st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']})")
-        st.markdown(f"🤝 **LinkedIn Connection Status:** {lead['linkedin_status']}") 
-        st.info(f"**AI Mapping Rationale:** {lead['rationale']}")
+        st.markdown(f"📊 **Connection Type:** {lead['connection_type']}") 
+        st.info(f"**Mapping Rationale:** {lead['rationale']}")
         
-        col1, col2 = st.columns([1, 1])
-        
-        with col1:
-            st.link_button("🌐 View LinkedIn Profile", "https://www.linkedin.com")
-            
-        with col2:
-            generate_email = st.button(f"Generate Outreach Draft", key=f"btn_{i}")
+        generate_email = st.button(f"Generate Outreach Draft", key=f"btn_{i}")
 
         if generate_email:
-            with st.spinner("Drafting personalized outreach..."):
+            with st.spinner("Synthesizing relationship context into personalized outreach..."):
                 prompt = f"""
                 You are an expert sales strategist for NewtonX.
                 Account: {account_name}
                 Target Prospect: {lead['name']} ({lead['role']})
                 Internal Bridge Contact: {lead['bridge_name']} ({lead['bridge_role']})
-                LinkedIn Relationship: {lead['linkedin_status']}
+                Connection Type: {lead['connection_type']}
+                Relationship Details: {lead['rationale']}
                 
-                Write a short, professional email that the NewtonX CPM can send to {lead['bridge_name']} asking for an introduction to {lead['name']}.
+                Write a short email that the NewtonX CPM can send to {lead['bridge_name']} asking for an introduction to {lead['name']}.
                 
-                CRITICAL INSTRUCTION:
-                If the LinkedIn Relationship is "1st Degree Connection", explicitly mention in the email that you noticed they are directly connected on LinkedIn. 
-                If it is a "2nd Degree Connection", ask if they happen to cross paths or know them internally.
-                
-                Mention the value NewtonX provides (expert B2B market research and rapid insights) and how it might help the target prospect's department.
-                Keep it brief, friendly, and easy for the bridge contact to forward. Do not use placeholders like [Your Name].
+                CRITICAL INSTRUCTION FOR TONE AND CONTENT:
+                - If the Connection Type is "Direct Communication (Affinity)", explicitly reference their recent meeting/email history.
+                - If the Connection Type is "Heuristic Alumni Match (ZoomInfo)", mention their shared past experience and ask if they feel comfortable reaching out based on that alumni connection.
+                - Use highly direct, casual language suitable for internal colleagues. Strictly avoid overly formal, stiff, or passive-aggressive phrasing. Get straight to the point.
+                - Mention the value NewtonX provides (expert B2B market research and rapid insights) and how it might help the target's department.
+                - Keep it brief and easy for the bridge contact to forward or action. Do not use placeholders like [Your Name].
                 """
 
                 response = client.chat.completions.create(
