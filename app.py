@@ -37,4 +37,128 @@ contact_linkedin = [
     "https://www.linkedin.com/in/ozlem-sezginel", "https://www.linkedin.com/in/opub",
     "https://www.linkedin.com/in/elisa-garcia-b8bb2092", "https://www.linkedin.com/in/jennie-cady",
     "https://www.linkedin.com/in/nili-shah", "https://www.linkedin.com/in/steve-downs",
-    "
+    "https://www.linkedin.com/in/marcela-colmenares", "https://www.linkedin.com/in/prachi-jalan",
+    "https://www.linkedin.com/in/yiyi-cui", "https://www.linkedin.com/in/ismael-camus"
+]
+
+# Section 1: Current Account Status
+st.header("1. Current Account Overview")
+account_name = st.selectbox("Account Name", options=["Microsoft"])
+
+st.markdown("**Existing Relationships:**")
+
+if account_name.strip().lower() == "microsoft":
+    df = pd.DataFrame({
+        "Name": contact_names,
+        "Role": contact_roles,
+        "Team": contact_teams,
+        "Email": contact_emails, 
+        "Relationship strength": contact_strengths,
+        "LinkedIn Action": contact_linkedin 
+    })
+    
+    st.dataframe(
+        df,
+        column_config={
+            "LinkedIn Action": st.column_config.LinkColumn("Profile Link", display_text="🔗 View Profile")
+        },
+        hide_index=True,
+        use_container_width=True 
+    )
+else:
+    st.warning(f"No existing CRM records found for '{account_name}'. Displaying empty matrix.")
+    st.dataframe(pd.DataFrame(columns=["Name", "Role", "Team", "Email", "Relationship strength", "Profile Link"]), hide_index=True, use_container_width=True)
+
+# Section 2: Enterprise Waterfall Discovery
+st.header("2. AI Target & Bridge Discovery")
+target_department = st.text_input("Which department do you want to expand into?", value="Enterprise AI Solutions")
+
+if st.button("Find Targets & Map Bridges"):
+    if account_name.strip().lower() != "microsoft":
+        st.error("Please select an account with existing relationships (e.g., Microsoft) to map bridges.")
+    else:
+        # Visualizing the Waterfall Logic for the presentation
+        with st.spinner(f"Querying CRM & Affinity for internal {target_department} contacts..."):
+            time.sleep(1.5)
+        with st.spinner("1 target found internally. Triggering ZoomInfo for net-new profiles..."):
+            time.sleep(1.5)
+        with st.spinner("Profiles found. Cross-referencing Affinity metadata to identify internal Bridge contacts..."):
+            time.sleep(2.0)
+            
+            st.session_state['leads'] = [
+                {
+                    "name": "Sarah Jenkins",
+                    "role": f"VP of {target_department}",
+                    "bridge_name": "Aparajita Bhattacharyya",
+                    "bridge_role": "GTM Strategy & Monetization Leader",
+                    "connection_type": "Direct Communication (Affinity)",
+                    "connection_score": "88/100 (Strong)", 
+                    "rationale": "Affinity captured 14 email exchanges and 2 calendar invites that included both Aparajita and Sarah in the last 6 months."
+                },
+                {
+                    "name": "Marcus Vance",
+                    "role": f"Director of {target_department} Integration",
+                    "bridge_name": "Steve Downs",
+                    "bridge_role": "Principal Product Manager",
+                    "connection_type": "Alumni Match (ZoomInfo)",
+                    "connection_score": "0/100 (No direct contact)", 
+                    "rationale": "No internal email metadata found. Fallback to ZoomInfo match: Both Marcus and Steve worked at Citrix DaaS in 2014."
+                },
+                {
+                    "name": "Chloe Davies",
+                    "role": f"Head of {target_department} Operations",
+                    "bridge_name": "None (Direct Outreach)",
+                    "bridge_role": "N/A",
+                    "connection_type": "Cold Outreach (ZoomInfo)",
+                    "connection_score": "0/100 (No overlap)", 
+                    "rationale": "No internal email metadata found. No heuristic alumni overlap found in ZoomInfo. Recommending direct cold value-play outreach."
+                }
+            ]
+
+# Section 3: Display Leads and Generate Outreach
+if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
+    st.success(f"Search complete. Found {len(st.session_state['leads'])} high-value prospects.")
+    
+    for i, lead in enumerate(st.session_state['leads']):
+        st.markdown(f"### Prospect {i+1}: {lead['name']}")
+        st.markdown(f"**Title:** {lead['role']}")
+        st.markdown(f"🔗 **Best Internal Bridge:** {lead['bridge_name']} ({lead['bridge_role']})")
+        st.markdown(f"📊 **Connection Type:** {lead['connection_type']}") 
+        st.info(f"**Mapping Rationale:** {lead['rationale']}")
+        
+        generate_email = st.button(f"Generate Outreach Draft", key=f"btn_{i}")
+
+        if generate_email:
+            with st.spinner("Synthesizing relationship context into personalized outreach..."):
+                prompt = f"""
+                You are an expert sales strategist for NewtonX.
+                Account: {account_name}
+                Target Prospect: {lead['name']} ({lead['role']})
+                Internal Bridge Contact: {lead['bridge_name']} ({lead['bridge_role']})
+                Connection Type: {lead['connection_type']}
+                Relationship Details: {lead['rationale']}
+                
+                CRITICAL INSTRUCTION FOR TASK AND TONE:
+                - If the Connection Type is "Direct Communication (Affinity)" or "Alumni Match (ZoomInfo)", write a short email that the NewtonX CPM can send to the Internal Bridge Contact asking for an introduction to the Target Prospect. 
+                    - For Affinity matches: explicitly reference their recent meeting/email history.
+                    - For Alumni matches: mention their shared past experience and ask if they feel comfortable reaching out.
+                    - Tone for internal emails: Use highly direct, casual language suitable for internal colleagues. Strictly avoid overly formal, stiff, or passive-aggressive phrasing. Get straight to the point.
+                
+                - If the Connection Type is "Cold Outreach (ZoomInfo)", write a direct cold outreach email to be sent directly to the Target Prospect (ignore the Bridge Contact). 
+                    - Focus purely on a strong value proposition regarding how NewtonX (expert B2B market research and rapid insights) can help their specific department. 
+                    - Tone for cold emails: Professional, concise, and compelling.
+                
+                Keep it brief and easy to action. Do not use placeholders like [Your Name].
+                """
+
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.7
+                )
+                
+                draft_text = response.choices[0].message.content
+                st.markdown("**Outreach Draft:** *(Click the icon in the top right of the box to copy)*")
+                st.code(draft_text, language="markdown")
+        
+        st.divider()
