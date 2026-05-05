@@ -37,27 +37,4 @@ contact_linkedin = [
     "https://www.linkedin.com/in/ozlem-sezginel", "https://www.linkedin.com/in/opub",
     "https://www.linkedin.com/in/elisa-garcia-b8bb2092", "https://www.linkedin.com/in/jennie-cady",
     "https://www.linkedin.com/in/nili-shah", "https://www.linkedin.com/in/steve-downs",
-    "https://www.linkedin.com/in/marcela-colmenares", "https://www.linkedin.com/in/prachi-jalan",
-    "https://www.linkedin.com/in/yiyi-cui", "https://www.linkedin.com/in/ismael-camus"
-]
-
-# Section 1: Current Account Status
-st.header("1. Current Account Overview")
-account_name = st.selectbox("Account Name", options=["Microsoft"])
-
-st.markdown("**Existing Relationships:**")
-
-if account_name.strip().lower() == "microsoft":
-    df = pd.DataFrame({
-        "Name": contact_names,
-        "Role": contact_roles,
-        "Team": contact_teams,
-        "Email": contact_emails, 
-        "Relationship strength": contact_strengths,
-        "LinkedIn Action": contact_linkedin 
-    })
-    
-    st.dataframe(
-        df,
-        column_config={
-            "LinkedIn Action": st.column_config.LinkColumn("Profile Link", display_text="🔗 View Profile")
+    "
