@@ -108,7 +108,7 @@ if st.button("Find Targets & Map Bridges"):
 
 # Section 3: Display Leads and Generate Outreach
 if 'leads' in st.session_state and account_name.strip().lower() == "microsoft":
-    st.success(f"Waterfall complete. Found {len(st.session_state['leads'])} high-value prospects.")
+    st.success(f"Search complete. Found {len(st.session_state['leads'])} high-value prospects.")
     
     for i, lead in enumerate(st.session_state['leads']):
         st.markdown(f"### Prospect {i+1}: {lead['name']}")
